@@ -1,110 +1,90 @@
 
 ## 📱 Laundry POS Extended
 
-A modern point-of-sale system built with **Flutter**, tailored for laundry shops. Supports **Sunmi V2/V2s/V2 Pro printers**, **QR-based order management**, multilingual UI (English, Arabic, Hindi & Urdu), and integrates tightly with **Firebase Firestore** for real-time data sync and cloud operations. Extended version includes the ability track the status of each order.
+This is the **Cilyde Laundry POS (Extended)** system — a streamlined and smart point-of-sale and laundry order tracking solution designed for use in laundromats.
 
-### ✨ Features
-
-* ✅ Order creation with multiple services (wash, iron, both)
-* 🧺 Itemized clothes selection per service
-* 🧾 Auto-printing on Sunmi V2/V2s with QR code for order tracking
-* 📦 Order status tracking (active/completed)
-* 📅 Daily transaction reports and summaries
-* 🌐 Web dashboard for supervisors (View orders, filter by customer/date)
-* 📲 Multilingual support (English, Hindi, Arabic, Urdu)
-* 📤 Export to Excel/PDF (sales and historical orders)
-* ⚙️ Minimal maintenance barcode/QR scanning
+Built with **Flutter** and integrated with **Firebase**, this version goes beyond simple order entry. It enables full **order lifecycle management** with support for **QR-based scan-out, printer integration**, and **customer tracking** using unique auto-generated codes.
 
 ---
 
-## 🚀 Getting Started
+## 📱 Ideal Workflow
 
-### Prerequisites
+To maximize efficiency, the system is designed to be used across two devices:
 
-* Flutter (>=3.10)
-* Dart (>=3.0)
-* Firebase CLI (`firebase login`)
-* Sunmi device with printer (V2 or V2s)
+- A **Sunmi V2 devices** (or any Android device with a built-in printer but would need code tweaks) for **order placement and receipt printing**.
+- A **mobile phone or tablet** for **scanning and completing** customer orders.
 
-### 1. Clone the repo
+### 🧺 Walkthrough:
 
-```bash
-git clone https://github.com/cilyde/laundry_pos_extended.git
-cd laundry_pos_extended
-```
+1. **Customer drops off clothes**:
+   - Staff opens the app on the Sunmi device.
+   - Selects laundry service and clothing types.
+   - Order is placed, and a **receipt is printed** (QR included).
+   - QR sticker is attached to the clothes.
 
-### 2. Install dependencies
-
-```bash
-flutter pub get
-```
-
-### 3. Firebase setup
-
-Ensure you've configured Firebase using:
-
-```bash
-flutterfire configure
-```
-
-and added the `google-services.json` (Android) and/or `GoogleService-Info.plist` (iOS) in appropriate locations.
+2. **Customer comes to pick up**:
+   - Staff uses the mobile app to **scan the QR** on the clothes.
+   - The order is automatically marked **complete**, and dashboard counts are updated.
 
 ---
 
-## 📁 Folder Structure
+## 🔍 Key Features
+
+- **Active Order Tracking**: Easily view and filter pending, completed, or scanned orders.
+- **Firebase Integration**: Realtime syncing of orders and customer history.
+- **QR Workflow**: Simplifies order management during pickup.
+- **Customer Code System**: Customers are assigned unique, easy-to-recall codes like `JO-78` based on name and phone for internal reference.
+- **Daily & Monthly Reports**: Easily access summaries and analytics per date or customer.
+- **Multi-Language Support**: English, Arabic, Urdu and Hindi are supported natively.
+
+---
+
+## 💡 How Customer Codes Work
+
+When a new customer places an order:
+- If **John Doe** has the number `12345678`, his code becomes `JO-78`.
+- If **Jonathan** has `098765478`, his code becomes `JO-478`.
+
+This approach ensures quick referencing and avoids repetition while allowing customers with similar names to still get unique codes.
+
+---
+
+## 📁 Project Structure
 
 ```
+
 lib/
-├── main.dart
-├── models/           # Data models (Order, Payment, etc.)
-├── services/         # Firebase, Printer, Scanner, etc.
-├── viewmodels/       # MVVM ViewModels
-├── views/            # UI Screens (POS, Dashboard, etc.)
-├── web/              # Web dashboard logic (MVVM split)
-└── utils/            # Helpers like translations, date logic
+├── models/
+├── services/
+├── viewmodels/
+├── views/
+├── utils/
+└── web/                # Web-specific version of the app (MVVM separated)
+
 ```
 
 ---
 
-## 🧪 Testing
+## 🛠 Technologies Used
 
-To run the app locally on a Sunmi device:
-
-```bash
-flutter run --release
-```
-
-To run the web dashboard:
-
-```bash
-flutter run -d chrome -t lib/web/main_web.dart
-```
+- Flutter 3+
+- Firebase Firestore
+- Sunmi printer integration (via `sunmi_printer_plus`)
+- GetX (or Provider) for state management
+- Excel & PDF export packages
+- AnimatedList for smooth UI
 
 ---
 
-## 🛠️ Tech Stack
+## 🔗 Contribution
 
-* **Flutter** (MVVM architecture)
-* **Firebase Firestore**
-* **Sunmi Printer SDK (`sunmi_printer_plus`)**
-* **Google Sheets / Excel export**
-* **Cupertino-style UI**
+This system is currently under active internal development. Contributions may be considered in the future.
 
 ---
 
-## 📦 Deployment Notes
+## 🧼 Why “Extended”?
 
-* Sunmi printers use thermal paper: excessive blank lines reduce printer lifespan.
-* Orders are stored under `/vOrders/{yyyy-MM-dd}/orders/{orderId}`
-* Customers stored in `/vCustomers/{customer_code}`
-* Web dashboard should be hosted separately from mobile builds
+This version introduces **live order status tracking** and **scan-based completion**, elevating it beyond a basic POS app but also changing the whole database architecture. It’s optimized for teams handling both front-desk and back-end laundry workflows — increasing accountability, reducing errors, and boosting speed.
 
 ---
 
-## ✅ To Do
-
-* [ ] Role-based access for supervisor vs staff
-* [ ] Notification system for ready orders
-* [ ] Integrate with WhatsApp for order confirmation
-
----
