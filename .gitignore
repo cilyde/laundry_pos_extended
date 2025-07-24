@@ -1,6 +1,7 @@
 firebase.json
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
+.env
 
 # Flutter stuff
 .dart_tool/

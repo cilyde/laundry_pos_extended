@@ -7,6 +7,8 @@ import '../view_models/dashboard_view_model.dart';
 import 'daily_transactions_view.dart';
 
 class DashboardView extends StatelessWidget {
+  const DashboardView({super.key});
+
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<DashboardViewModel>();

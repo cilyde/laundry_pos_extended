@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../main.dart';
 import '../models/cloth_item.dart';
+import '../services/connectivity_service.dart';
 import '../utils/service_converter.dart';
 import '../view_models/pos_view_model.dart';
 import 'pos_view.dart';
@@ -389,7 +390,7 @@ class _OrderReviewScreenState extends State<OrderReviewScreen> {
                             ? null
                             : () async {
                               print(1);
-                              if (await vm.checkOnline()) {
+                              if (await checkOnline()) {
                                 print(2);
                                 final name = _nameController.text.trim();
                                 final phone = _phoneController.text.trim();

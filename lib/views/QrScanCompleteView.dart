@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+import '../main.dart';
+import '../services/connectivity_service.dart';
 import '../services/firebase_service.dart';
 
 class QrScanCompleteView extends StatefulWidget {
@@ -65,12 +67,30 @@ class _QrScanCompleteViewState extends State<QrScanCompleteView> {
         children: [
           Expanded(
             child: MobileScanner(
-              onDetect: (BarcodeCapture capture) {
-                final barcode = capture.barcodes.firstOrNull;
-                final raw = barcode?.rawValue;
+              onDetect: (BarcodeCapture capture) async {
+                if (await checkOnline()) {
+                  final barcode = capture.barcodes.firstOrNull;
+                  final raw = barcode?.rawValue;
 
-                if (raw != null) {
-                  _handleQRCode(raw);
+                  if (raw != null) {
+                    _handleQRCode(raw);
+                  }
+                } else {
+                  scaffoldMessengerKey.currentState?.showMaterialBanner(
+                    MaterialBanner(
+                      content: Text(
+                        'No internet connection. Please try again later.',
+                        style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                      backgroundColor: Colors.red,
+                      actions: [
+                        TextButton(
+                          onPressed: () => scaffoldMessengerKey.currentState?.hideCurrentMaterialBanner(),
+                          child: Text('DISMISS', style: TextStyle(color: Colors.white)),
+                        ),
+                      ],
+                    ),
+                  );
                 }
               },
             ),

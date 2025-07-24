@@ -99,6 +99,44 @@ const translations = {
     'ar': 'بدلة',
     'ur': 'سوٹ',
   },
+  'lungi': {
+    'en': 'Lungi',
+    'hi': 'लुंगी',
+    'ar': 'لونجي',
+    'ur': 'لنگی',
+  },
+  'mund-double': {
+    'en': 'Mundu-Double',
+    'hi': 'डबल मुंडु',
+    'ar': 'المندو المزدوج',
+    'ur': 'ڈبل منڈو',
+  },
+  'jacket': {
+    'en': 'Jacket',
+    'hi': 'औद्योगिक जैकेट',
+    'ar': 'سترة صناعية',
+    'ur': 'صنعتی جیکٹ',
+  },
+  'socks': {
+    'en': 'Socks',
+    'hi': 'मोज़े',
+    'ar': 'جوارب',
+    'ur': 'موزے',
+  },
+  'towel': {
+    'en': 'Towel',
+    'hi': 'तौलिया',
+    'ar': 'منشفة',
+    'ur': 'تولیہ',
+  },
+  'ghutra': {
+    'en': 'Ghutra',
+    'hi': 'गुत्रा',
+    'ar': 'غترة',
+    'ur': 'غترہ',
+  },
+
+
 
   // Service types
   'wash': {
@@ -125,6 +163,13 @@ const translations = {
     'ar': 'غسيل وكيّ',
     'ur': 'دھلائی اور استری',
   },
+  'express': {
+    'en': 'Express',
+    'hi': 'अभिव्यक्त करना',
+    'ar': 'يعبرّ',
+    'ur': 'اظہار',
+  },
+
 
   // Review screen labels
   'review order': {

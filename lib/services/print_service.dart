@@ -129,19 +129,17 @@ extension ReceiptPrinting on PrinterService {
       jsonEncode({'type': 'complete_order', 'orderId': orderID, 'dateKey': DateFormat('yyyy-MM-dd').format(DateTime.now())}),
       qrcodeSize: 6,
     );
-    lineWrap(5 * lineWrapMultiplyer);
     await printDivider();
 
     await printText(customerCode, bold: true, fontSize: 40, align: SunmiPrintAlign.CENTER);
-    lineWrap(5 * lineWrapMultiplyer);
+    lineWrap(3 * lineWrapMultiplyer);
     await printText('$orderID', bold: true, align: SunmiPrintAlign.CENTER, fontSize: 36);
 
-    lineWrap(5 * lineWrapMultiplyer);
+    lineWrap(3 * lineWrapMultiplyer);
 
     await printText('$now | ${total.toStringAsFixed(2)}', fontSize: 26, align: SunmiPrintAlign.CENTER);
-    lineWrap(5 * lineWrapMultiplyer);
 
-    lineWrap(4 * lineWrapMultiplyer);
+    lineWrap(5 * lineWrapMultiplyer);
     await cutPaper();
   }
 }

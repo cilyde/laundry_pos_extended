@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:laundry_os_extended/Config.dart';
 import 'package:laundry_os_extended/utils/error_handler.dart';
 
+import '../Constants/clothItems.dart';
 import '../models/cloth_item.dart';
 import '../models/customer_model.dart';
-import '../services/connectivity_service.dart';
 import '../services/firebase_service.dart';
 import '../services/print_service.dart';
 import '../utils/translation.dart';
@@ -189,6 +190,12 @@ String tr(String key, String lang) => translations[key.toLowerCase()]?[lang] ?? 
 // }
 
 class POSViewModel extends ChangeNotifier {
+  POSViewModel(this._printer) {
+    if (isSunmi) {
+      _initPrinter();
+    }
+  }
+
   final PrinterService _printer;
   bool _isLoading = false;
 
@@ -199,10 +206,28 @@ class POSViewModel extends ChangeNotifier {
   bool get isOnline => _isOnline;
 
   ServiceType currentService = ServiceType.both;
-  final Map<ServiceType, List<ClothItem>> _selectedItemsByService = {ServiceType.wash: [], ServiceType.iron: [], ServiceType.both: []};
+  final Map<ServiceType, List<ClothItem>> _selectedItemsByService = {
+    ServiceType.wash: [],
+    ServiceType.iron: [],
+    ServiceType.both: [],
+    ServiceType.express: [],
+  };
 
-  POSViewModel(this._printer) {
-    _initPrinter();
+  List<ClothItem> _filteredItems = [];
+
+  List<ClothItem> get filteredItems => _filteredItems;
+
+  void refreshItems() {
+    print("In vm refreshing filtered");
+    // Filter items based on selected service and availability of iron price
+    _filteredItems =
+        availableItems.where((item) {
+          if ((currentService == ServiceType.iron || currentService == ServiceType.both || currentService == ServiceType.express) &&
+              item.ironPrice == null) {
+            return false; // Exclude items with no iron price when iron is selected
+          }
+          return true;
+        }).toList();
   }
 
   Future<void> _initPrinter() async {
@@ -216,10 +241,11 @@ class POSViewModel extends ChangeNotifier {
 
   void changeService(ServiceType service) {
     currentService = service;
+    refreshItems();
     notifyListeners();
   }
 
-  void toggleItem(ClothItem item) {
+  void addItem(ClothItem item) {
     final items = _selectedItemsByService[currentService]!;
     final index = items.indexWhere((i) => i.name == item.name);
     if (index >= 0) {
@@ -230,6 +256,8 @@ class POSViewModel extends ChangeNotifier {
           name: item.name,
           washPrice: item.washPrice,
           ironPrice: item.ironPrice,
+          bothPrice: item.bothPrice,
+          expressPrice: item.expressPrice,
           quantity: 1,
           isSelected: true,
           selectedService: currentService,
@@ -255,15 +283,6 @@ class POSViewModel extends ChangeNotifier {
     final items = _selectedItemsByService[item.selectedService]!;
     items.removeWhere((e) => e.name == item.name);
     notifyListeners();
-  }
-
-  Future<bool> checkOnline() async {
-    final isConnected = await ConnectivityService.hasConnection();
-    if (!isConnected) {
-      debugPrint('No internet connection.');
-      return false;
-    }
-    return true;
   }
 
   /// Saves and prints the order. Requires [name] and [phoneNumber].
@@ -305,21 +324,9 @@ class POSViewModel extends ChangeNotifier {
                 )
                 .toList();
 
-        // for (var i = 0; i < 2; i++) {
-        //   await _printer.printOrderReceiptExtended(
-        //     customerCode: customer.customerCode,
-        //     items: receiptItems,
-        //     total: totalPrice,
-        //     orderID: orderID!,
-        //   );
-        //   if (i != 1) await Future.delayed(const Duration(seconds: 3));
-        // }
-          await _printer.printOrderReceiptExtended(
-            customerCode: customer.customerCode,
-            items: receiptItems,
-            total: totalPrice,
-            orderID: orderID!,
-          );
+        if (isSunmi) {
+          await _printer.printOrderReceiptExtended(customerCode: customer.customerCode, items: receiptItems, total: totalPrice, orderID: orderID!);
+        }
 
         reset();
         return true;

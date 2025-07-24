@@ -10,5 +10,7 @@ String serviceLabel(ServiceType type, String currentLanguage) {
       return tr('iron', currentLanguage);
     case ServiceType.both:
       return tr('both', currentLanguage);
+    case ServiceType.express:
+      return tr('express', currentLanguage);
   }
 }
